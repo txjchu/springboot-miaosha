@@ -201,10 +201,41 @@
             c. 将 OTP 验证码通关短信通道发送给用户
 
     3.7 用户模型管理--Metronic模板简介(06:18)
-
+        1. 引入静态文件。暂时放在 miaosha 目录下。
+        2. 创建 getotp.html
 
     3.8 用户模型管理--getotp页面实现(16:00)
+        1. 完成 getotp.html 页面样式的编写。
+        2. 完成 button 提交业务的编写
+                先实现页面交互，再实现页面美化。
+                a. 引入 jquery.js
+                b. 编写 js 代码，实现 button 的 click 事件，用于向后端发送获取短信验证码的请求。
+                    // 绑定 otp 的 click 事件用于向后端发送获取短信验证码的请求
+                    // 使用 ajax 方式发送异步请求完成业务。
+                    // 为 Controller 中的 @RequestMapper 添加指定的 method,consumes(将其声明到控制层基类中)
+                    // 注意判空处理
+                    // 注意 button 自定义 click 方法后，该方法内应该返回 false，因为使用 ajax 发送请求处理业务，不需要常见的事件冒泡给 form 提交 POST 方法。
+                    // 注意程序中已经进行了统一异常处理，因此会尽可能返回了 success HTTPstatus = 200
+                c. 因为是从本地 html 中发送请求到 localhost 的 url 因此会出现跨域安全异常，虽然请求能够到达控制层，并成功被控制层方法处理业务并返回，但是 ajax 请求会认为该请求是不安全的，因此走不到 success 块中，并会给浏览器报错。
+                    在 springboot 中处理 ajax 跨域请求的方式：只要让 response 时刻返回 'Access-Control-Allow-Origin' 为所有的域，即 * 即可。
+                    SpringBoot 提供给我们一个简单注解方式 @CrossOrigin 实现所有 SpringBoot 中所有请求返回对象带上一个 Access-Control-Allow-Origin 标签，即可实现跨域处理。
+                    @CrossOrigin 可使用在 controller 上，或方法级别上，也可以同时使用，Spring将合并两个注释属性以创建合并的CORS配置。
+                    该注解可以有2个参数：
+                       origins ：允许可访问的域列表
+                       maxAge：准备响应前的缓存持续的最大时间（以秒为单位）。
+
+        3.  Ajax跨域请求问题，设置一下属性就可以了，
+            前端 Ajax 请求中添加 xhrFields: {withCredentials: true},
+            后端 controller 层添加 @CrossOrigin(origins = "*", allowCredentials = "true") 就可以访问了
+
     3.9 用户模型管理--getotp页面美化(05:05)
+        1. 引入 bootstrap 相关的 css 样式表
+            <link href="static/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+            <link href="static/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
+            <link href="static/assets/admin/pages/css/login.css" rel="stylesheet" type="text/css"/>
+        2. 为页面元素添加 class 样式，实现页面美化。
+
+
     3.10 用户模型管理--用户注册功能实现01(19:25)
     3.11 用户模型管理--用户注册功能实现02(21:41)
     3.12 用户模型管理--用户登陆功能实现(12:01)

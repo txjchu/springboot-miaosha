@@ -2,22 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ff2c9da-270e-4ed1-bf8c-fea1afec104f" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/controller/BaseController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/html/getotp.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/controller/BaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/controller/BaseController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/error/BusinessException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/error/BusinessException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/error/CommonError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/error/CommonError.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/error/EmBusinessError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/miaoshaproject/error/EmBusinessError.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis-generator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis-generator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/miaosha.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/miaoshaproject/controller/BaseController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/miaoshaproject/controller/BaseController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/miaoshaproject/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/miaoshaproject/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/miaoshaproject/error/BusinessException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/miaoshaproject/error/BusinessException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/miaoshaproject/error/CommonError.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/miaoshaproject/error/CommonError.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/miaoshaproject/error/EmBusinessError.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/miaoshaproject/error/EmBusinessError.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/mybatis-generator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis-generator.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,6 +60,7 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -99,10 +91,13 @@
     <option name="vmOptions" value="-DarchetypeCatalog=local" />
   </component>
   <component name="ProjectId" id="1m6ewoEhk342grP5nVJwdAm3D1I" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="添加" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
@@ -221,7 +216,7 @@
       <workItem from="1608825374426" duration="13285000" />
       <workItem from="1608894071960" duration="10670000" />
       <workItem from="1609062254579" duration="18692000" />
-      <workItem from="1609140300714" duration="600000" />
+      <workItem from="1609140300714" duration="7708000" />
     </task>
     <servers />
   </component>
@@ -240,5 +235,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

@@ -9,9 +9,7 @@ import com.miaoshaproject.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,7 +21,7 @@ import java.util.Random;
  * @date: 2020/12/25 21:40
  */
 @Controller("user") // 该 Controller 的 name 就是 user
-@RequestMapping("/user")
+@RequestMapping(value = "/user")
 public class UserController extends BaseController{
 
     @Autowired
@@ -38,7 +36,8 @@ public class UserController extends BaseController{
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getotp")
+    @RequestMapping(value = "/getotp", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED}) // consumes 表示 contentType 的类型会消费一个 consumes 对应的名字。字符串容易出错，因此在 Controller 基类中将其声明为静态字符串，在其他 Controller 组件中就可以直接引用。
+    @CrossOrigin    // 可以使 ajax 请求到该控制器的 url 都能实现跨域访问  @CrossOrigin(allowCredentials = "true",allowedHeaders = "*")
     public CommonReturnType getOtp(@RequestParam(name = "telephone")String telephone){
         // 需要按照一定的规则生产 OTP 验证码
         Random random = new Random();
