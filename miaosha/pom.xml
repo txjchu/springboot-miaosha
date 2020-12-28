@@ -26,7 +26,7 @@
   </properties>
 
   <dependencies>
-
+    <!--从父pom文件中，将该依赖引入-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -65,6 +65,35 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+    <!--apache 的 commons 工具组件包-->
+    <dependency>
+      <groupId>#en.org.apache.commons</groupId>
+      <artifactId>commons</artifactId>
+      <version>3.9</version>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>#en.commons.apache.commons</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>3.9</version>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>#en.org.apache.commons</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>RELEASE69</version>
+      <type>pom</type>
+    </dependency>
+
+
   </dependencies>
 
   <build>

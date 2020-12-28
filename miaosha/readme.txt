@@ -3,27 +3,37 @@
 1. 课程介绍
 2. 应用SpringBoot完成基础项目搭建
     2.1 使用IDEA创建MAVEN项目
+        1. New -> Project, 选择 Maven, Create from archetype，选择: maven-archetype-quickstart.
+        2. 创建项目名为 miaosha .
+        3. 等待 IDEA 构建项目。
+        4. 标注 java 源码目录，resources 资源文件目录，test 测试目录。
+        5. 运行启动类，class App 中的 main 方法，查看控制台是否输出正确。
+
     2.2 引入SpringBoot依赖包实现简单的Web
-        1.
+        1. 从零开始集成 SpringBoot，在主 pom.xml 文件中，引入 <parent> 依赖，表示主 pom 的父级 pom ，完成 SpringBoot 框架集成。
               <parent>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
                 <version>2.3.2.RELEASE</version>
                 <relativePath/> <!-- lookup parent from repository -->
               </parent>
+                <!--从父pom文件中，将该依赖引入-->
                <dependency>
                  <groupId>org.springframework.boot</groupId>
                  <artifactId>spring-boot-starter-web</artifactId>
                  <version>2.2.1.RELEASE</version>
                </dependency>
         2. @EnableAutoConfiguration    // 将该启动类，开启整个工程基于 SpringBoot 自动化注解配置
-                SpringApplication.run(App.class, args);
-        3. @RequestMapping("/")
+                需要在 main 方法中使用 SpringApplication.run(App.class, args); 语句使项目按照 spring 框架模式运行启动。内嵌 tomcat 容器，不再需要其他外部容器。
+        3. @RequestMapping("/") // 在主启动类上使用该注解，并配置路径
+                另外在 main 方法上同样使用 @RequestMapping("...")后，可以实现 springMVC 框架模式的项目，保证访问正确。
 
     2.3 Mybatis接入SpringBoot项目
+        0. SpringBoot 配置化优势
+                配置化操作：详见1.
         1. # SpringBoot 默认在 resources 目录下寻找 application.properties 配置文件，加载其中的配置，就可以改变 SpringBoot 中默认配置。
-           server.port=8090
-        2. 集成 mysql 组件。 修改 pom.xmlpom.xm
+           server.port=8090，使用该配置文件可以配置 MySQL 数据库相关参数。（& -> &amp;）
+        2. 集成 mysql 组件。 修改 pom.xml ,添加支持 mysql 操作的依赖。
                 <dependency>
                   <groupId>mysql</groupId>
                   <artifactId>mysql-connector-java</artifactId>
@@ -85,32 +95,114 @@
     2.4 Mybatis自动生成器的使用方式
         1. mybatis-core版本要和mybatis-maven-plugin版本要一致
         2. mybatis-generator.xml 中的配置
+            1). 准备数据库，创建名称为 miaosha 的数据库，创建表：user_info、user_passowrd.(可以直接使用项目中 miaosha.sql 文件创建整体数据库)
+                    企业级应用用户的密码保存是需要分开存储的，一般是另外一个应用管理密码保存。
+                    密码保存必须用加密后的密文方式保存，严禁使用明文保存。
+            2). 需要注意的是在创建数据库表时，每个字段类型的设置。是否 null、默认值、长度、注释、主外键。
+            3). mybatis-generator.xml 中配置 <context> 中
+                    <jdbcConnection >    // 数据库连接信息
+                    <javaModelGenerator > // 设置数据库表创建的 DataObject 类存放位置等
+                    <sqlMapGenerator >      // 生成映射文件存放位置
+                    <javaClientGenerator >  // 生成 DAO 类存放位置
+                    <table >            // 配置根据对应表生成类的名称，以及去除自动生成基于 Example 的复杂SQL相关。
         3. 配置 maven Command line : mybatis-generator:generate -e -X
-            注意 ： generate 前是 :
+            注意 ： generate 前是 : 而不是 分号 ;
         4. 生成后，需要给 mapper 接口添加注解
         5. application.properties 中添加数据源配置
 
-            # 接入 mybatis 对应的数据源
+            # 接入 mybatis 对应的数据源配置
             spring.datasource.name=miaosha
             spring.datasource.url=jdbc:mysql://127.0.0.1:3306/miaosha?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false
             spring.datasource.username=root
-            spring.datasource.password=1234
+            spring.datasource.password=root
 
             # 使用 druid 数据源
             spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
-            spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+            spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver    // mysql 8.0 版本驱动
+        6. 将主启动类的注解 @EnableAutoConfiguration 修改为 @SpringBootApplication
+            作用是一样的。
+            主启动类添加 @MapperScan("com.miaoshaproject.dao")    // 定义 mapper 扫描路径
+        7. 编写访问方法，其中使用 UserDOMapper 去查询数据库，并将结果返回给页面显示。测试是否成功。
 
 3. 用户模块开发
     3.1 使用SpringMVC方式开发用户信息
+        1. 搭建 MVC 层次组件
+            创建 controller 层目录，并编写 UserController,包含一个 getUser(Integer id) 方法，注意添加注解。
+            创建 service 层目录，并编写 UserService 接口以及 UserSServiceImpl 实现类，包含 getUserById(Integer id) 方法，其中使用了 UserDOMapper.
+        2. 除了 UserDO 表示与数据库对应的数据对象类外， service 层业务领域也应该有与 DO 对象不同的对象 model, 即业务领域对象，用来封装 DO 对象，避免直接将 DO 对象返回给前端。
+            创建 service 层领域模型对象: com.miaoshaproject.service.model.UserModer, 其中封装从 DO 到 model 封装方法。
+            为 userPasswordDOMapper 添加 selectByUserId(Integer id) 方法，实现通过用户 id 查找对应的用户加密密码信息。
+        3. 编写 userController 中的 getUser() 方法，返回领域模型 userModel, 测试是否可以通过前端成功访问。
+        4. 创建一个前端模型对象 UserVO, 用来封装可以返回给前端的对象数据信息，不包含前端非必要属性字段。其中包含 convertFromModel(model) 方法，用来将核心领域模型 model 对象封装成可供前端使用的 VO 对象。
+        5. 需要注意的是 DO、VO、Model 对象中的属性类型必须一致，字段名同样要一致，才可以使用 BeanUtils.copyProperties(srcObj, tarObj) 方法，否则会丢失不一致属性中的数据。
+
     3.2 定义通用的返回对象-返回正确信息
         1. 通用的返回对象。方便前端解析数据。
-            首先，定义返回对象类型 class， 包含 String status, Object date 2个属性。
-            然后，定义 二重奏 create(Object result)-（该方法中如果没给 status 参数则给出默认值"success"） 调用 create(Object result, String status)，
+            首先，定义返回对象类型 class com.miaoshaproject.response.CommonReturnType， 包含 String status, Object date 2个属性。
+            然后，定义 二重奏创建对象方法， create(Object result)-（该方法中如果没给 status 参数则给出默认值"success"） 调用 create(Object result, String status)，
+        2. 返回的数据为 Object 对象。
+                若 status = success ,则返回前端需要的 JSON 数据。
+                若 status = fail , 则返回通用的错误码格式。
+        3. 修改 controller 层中的方法，将返回值修改为 CommonReturnType 类型的对象。
+        4. 查看运行效果。
+
     3.3 定义通用的返回对象-返回错误信息
+        1. 定义通用的异常返回对象类。其中包含错误码与描述。
+        2. 声明 com.miaoshaproject.error.CommonError 接口，包含
+                int getErrCode(); String getErrMsg(); CommonError setErrMsg(String errMsg); 方法.
+        3. 定义枚举 Enum EmBusinessError 实现 CommonError 接口中的方法。
+                包含2个成员变量属性。 int errCode, String errMsg.
+                定义枚举列表，实现接口中的方法。
+        4. 定义一个统一的 Exception 继承 Exception 类，且实现 CommonError 接口，com.miaoshaproject.error.BusinessException。
+            强关联一个 CommonError 对象，即 EmCommonError 枚举。（即包含一个成员变量）
+            实现接口方法。注意 super() 方法的调用。
+            项目中所有的捕获异常后都抛出该异常，最终由 Controller 组件进行异常处理。
+            该方式采用的是 包装器 的设计模式。
+
     3.4 定义通用的返回对象-异常处理01
+        1. 通过 SpringBoot 自带的 SpringMVC 的 ExceptionHandler 去解决一个通用的异常处理方式。
+        2. 定义 exceptionhandler 解决未被 controller 层吸收的异常。
+                定义捕获处理异常机制方法，在该方法上使用注解：
+                @ExcetpionHandler(Exception.class)  // 标明该方法捕获某种类型的异常处理方法
+                @ResponseStatus(HttpStatus.OK)      // 返回 HttpStatus状态为 OK
+                Object handlerException(HttpServletRequest request, Exception ex)
+                使用该方法返回一个之前定义的返回通用对象 CommonReturnType 方便前端解析数据。其中将该对象的 status 属性设置为 fail, data 设置为 ex.
+                该方法只能返回到一个页面路径，不能返回 CommonReturnType 对象。
+
     3.5 定义通用的返回对象-异常处理02
+        1. 为 handlerException() 方法继续添加 @ResponseBody 注解即可将返回的 object 返回给前端页面。
+                该方式会将异常的所有栈信息序列化后输出到前端页面，因此还需要继续处理，只将前端需要的异常信息返回给前端。
+        2. 将 ex 强转为 BusinessException ，然后使用其 getErrCode、getErrMsg 方法获取前端需要的异常信息，将其封装为 Map 后封装到 CommonReturnType 对象中，然后再返回给前端。
+        3. 优化：使用 CommonReturnType 的静态方法 create 构造对象并返回。
+        4. 继续完善该方法。
+                判断 exception 是否为 BusinessException 类型，如果不是则为 CommonReturnType 对象赋值 errCode 为 EmBusinessError 枚举中的 UNKNOWN_ERROR 的 code 和 msg。
+        5. 继续优化异常处理。
+                因为该处理方式是所有 controller 都需要的方式，因此将其抽象为 BaseController 中的方法，然后让其他 controller 组件去继承该 controller。
+        6. 总结：a. 定义一个 CommonReturnType, 能够用对应的 status, object 的方式返回所有的被 JSON 序列化对象，供前端解析使用，摒弃掉了使用 httpstatuscode + 内线 tomcat 自带的 error 页面方式去处理响应数据以及异常。
+                b. 并且定义了一个 BusinessException ，统一管理我们自定义的错误码。
+                c. 然后，在 BaseController 中定义一个所有 Controller 的基类，使用其中注解了 @ExceptionHandler 的方法来处理所有被 Controller 层捕获的异常。
+                    按照异常的种类由2种处理方式，一种是自定义 BusinessException, 其中有自定义的 error 的 code 和 msg，一种是未知的异常，采用统一处理方式。
+                d. 异常处理方法上还可以添加日志相关组件，方便项目运行记录与错误排查。
+
     3.6 用户模型管理-otp验证码获取
+        0. 基础能力建设
+                springboot + MVC + mybatis 框架搭建，外加常态的错误异常定义、正确的返回值类型定义。
+           模型能力管理
+                领域模型管理（如 user 对象就是一个用户领域的一个模型），包括完整的生命周期。用户模型、商品模型、秒杀模型等。
+                    用户信息管理：
+                        otp 短信获取
+                        otp 注册用户
+                        用户手机号登录
+        1. 用户获取 otp 短信验证码
+            a. 需要按照一定的规则生产OTP 验证码
+            b. 将 OTP 验证码通对应用户的手机号关联（一般使用Redis处理，此处采用 session 模仿实现）
+                使用 spring 注入方式注入一个 HttpServletRequest 对象，该对象其实是通过 spring bean 包装的 request 对象本质是 proxy 模式（spring 在注入 HttpServletRequest 时，发现如果注入的是 一个 ObjectFactory 类型的对象时，就会将注入的 bean 替换成一个 JDK 动态代理对象，代理对象在执行 HttpServletRequest 对象里的方法时，就会通过 RequestObjectFactory.getObject() 获取一个 新的 request 对象来执行。），即多例模式?。
+                Spring能实现在多线程环境下，将各个线程的request进行隔离，且准确无误的进行注入，奥秘就是ThreadLocal. 它的内部拥有 ThreadLocal 方式的 map，去让用户在每个线程中处理自己对应的 request 中的数据，并且有ThreadLocal清除的机制。
+            c. 将 OTP 验证码通关短信通道发送给用户
+
     3.7 用户模型管理--Metronic模板简介(06:18)
+
+
     3.8 用户模型管理--getotp页面实现(16:00)
     3.9 用户模型管理--getotp页面美化(05:05)
     3.10 用户模型管理--用户注册功能实现01(19:25)

@@ -1,7 +1,7 @@
 package com.miaoshaproject.error;
 
 /**
- * 笔记：包装器业务异常类的实现
+ * 笔记：设计模式：包装器业务异常类的实现
  *
  * 当程序出现任何 exception ，会抛出一个统一的 exception，该异常会被最后的 springboot 的 handle 捕获并做处理。
  *
@@ -29,8 +29,8 @@ public class BusinessException extends Exception  implements CommonError {
 
 
     @Override
-    public int getErrorCode() {
-        return this.commonError.getErrorCode();
+    public int getErrCode() {
+        return this.commonError.getErrCode();
     }
 
     @Override

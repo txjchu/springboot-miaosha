@@ -25,7 +25,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <!--生成对应表及类名--><!--DO:表示 dataObject 即与数据库表完全对应的数据对象，用来区分 MO（为各组件中整合数据的对象）和 VO（专门为前端展现所创建的对象） -->
+        <!--配置根据对应表生成类的名称，以及去除--><!--DO:表示 dataObject 即与数据库表完全对应的数据对象，用来区分 MO（为各组件中整合数据的对象）和 VO（专门为前端展现所创建的对象） -->
         <table tableName="user_info" domainObjectName="UserDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
         <table tableName="user_password" domainObjectName="UserPasswordDO" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
@@ -37,15 +37,4 @@
 
 
     </context>
-
-
-
-
-
-
-
-
-
-
-
 </generatorConfiguration>
